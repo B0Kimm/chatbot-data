@@ -52,6 +52,9 @@ male =pd.DataFrame(male,columns=column)
 female_category = dict(female['업종'].value_counts())
 male_category = dict(male['업종'].value_counts())
 
+female_category = dict(female['연령'].value_counts())
+male_category = dict(male['연령'].value_counts())
+
 print(female_category)
 print(male_category)
 

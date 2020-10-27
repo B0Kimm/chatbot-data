@@ -3,29 +3,58 @@ import sentencepiece as spm
 from pandas import DataFrame
 import pandas as pd
 
-review = './csv/chatbot.csv'
+# review = './csv/chatbot.csv'
 
-df = pd.read_csv(review, sep = ',', encoding= 'utf-8' )
-df1 = pd.read_excel('A 음식점(15,726).xlsx', sheet_name='15,726')
+# df = pd.read_csv(review, sep = ',', encoding= 'utf-8' )
+# df1 = pd.read_excel('A 음식점(15,726).xlsx', sheet_name='15,726')
+# df2 = pd.read_excel('D 소매점(14,949).xlsx', sheet_name='Sheet1')
+# df3 = pd.read_excel('F 카페(7,859).xlsx', sheet_name='Sheet1')
+# df4 = pd.read_excel('B 의류(15,826).xlsx', sheet_name='Sheet1')
+# df5 = pd.read_excel('C 학원(4,773).xlsx', sheet_name='Sheet1')
+# df6 = pd.read_excel('E 생활서비스(11,087).xlsx', sheet_name='Sheet1')
+# df7 = pd.read_excel('G 숙박업(7,113).xlsx', sheet_name='Sheet1')
+# df8 = pd.read_excel('H 관광여가오락(4,949).xlsx', sheet_name='Sheet1')
+df = pd.read_csv('kor_Pair_test.csv', sep = ',', encoding= 'utf-8')
+df2 = pd.read_csv('kor_pair_train.csv', sep = ',', encoding= 'utf-8')
+df3 = pd.read_csv('./csv/movie.csv', sep = ',', encoding= 'utf-8')
 
-tagger =Mecab()
+input_file='corpus2.txt'
 
-print(df.head(20))
 
-text1 = '감사합니다 앞으로도 잘부탁드려요 풍성한토핑 맛난피자로 보답하겠습니다'
-text2 = '맛있게 잘 먹었습니다~'
-text3 = '마시써효!!!떡볶이도좋아요'
-text4 = '불고기는 처음 시켜봤는데 상상 그이상....'
-text5 = '냠냠~너무 맛있어용^^ 또 시켜먹어요넘나맛있네여피짜로덤왜인기가잇는지알겟둠원픽예약임툐쿄'
-text6 = '영등포피자중 이찌방'
-text7 = 'ㅋㅋㅋㅋ 파인애플 당연 추가한줄알고 실수했네요죄송염~~🤣🤣오늘도 맛나게 잘 먹겠습니다^^🥰샐러드가 생각보다 푸짐하게 왔네요🥰'
-print(tagger.pos(text1))
-print(tagger.pos(text2))
-print(tagger.pos(text3))
-print(tagger.pos(text4))
-print(tagger.pos(text5))
-print(tagger.pos(text6))
-print(tagger.pos(text7))
+with open(input_file, 'a+', encoding='utf-8') as f:
+    for index, row in df3.iterrows():
+        f.write('{}\n'.format(row['review']))
+  
+        
+      
+# result = pd.concat([df1, df2])
+# result2 = pd.concat([df3, df4])
+# result3 = pd.concat([df5, df6])
+# result4 = pd.concat([df7, df8])
+
+# test1 = pd.concat([result, result2])
+# test2 = pd.concat([result3, result4])
+
+# data = pd.concat([test1,test2])
+
+# tagger =Mecab()
+
+# print(df.head(20))
+
+# text1 = '감사합니다 앞으로도 잘부탁드려요 풍성한토핑 맛난피자로 보답하겠습니다'
+# text2 = '맛있게 잘 먹었습니다~'
+# text3 = '마시써효!!!떡볶이도좋아요'
+# text4 = '불고기는 처음 시켜봤는데 상상 그이상....'
+# text5 = '냠냠~너무 맛있어용^^ 또 시켜먹어요넘나맛있네여피짜로덤왜인기가잇는지알겟둠원픽예약임툐쿄'
+# text6 = '영등포피자중 이찌방'
+# text7 = 'ㅋㅋㅋㅋ 파인애플 당연 추가한줄알고 실수했네요죄송염~~🤣🤣오늘도 맛나게 잘 먹겠습니다^^🥰샐러드가 생각보다 푸짐하게 왔네요🥰'
+# print(tagger.pos(text1))
+# print(tagger.pos(text2))
+# print(tagger.pos(text3))
+# print(tagger.pos(text4))
+# print(tagger.pos(text5))
+# print(tagger.pos(text6))
+# print(tagger.pos(text7))
 
 # 띄어쓰기
 # [('감사', 'NNG'), ('합니다', 'XSV+EF'), ('앞', 'NNG'), ('으로', 'JKB'), ('도', 'JX'), ('잘', 'MAG'), ('부탁', 'NNG'), ('드려요', 'VV+EC'), ('풍성', 'XR'), ('한', 'XSA+ETM'), ('토핑', 'NNG'), ('맛난', 'VA+ETM'), ('피자', 'NNG'), ('로', 'JKB'), ('보답', 'NNG'), ('하', 'XSV'), ('겠', 'EP'), ('습니다', 'EF')]
@@ -42,53 +71,80 @@ print(tagger.pos(text7))
 
 #print(df1.head(20))
 
-input_file = './csv/corpus.txt'
+# input_file = './csv/corpus.txt'
 
-# 텍스트 파일로 만들기 -> setencepiece는 txt만 받음
-with open(input_file, 'a+', encoding='utf-8') as f:
-    for index, row in df1.iterrows():
-        f.write('{}\n'.format(row['SENTENCE']))
-        # if row['CATEGORY'] == '배달음식점':
-        #     f.write ('{}\n'.format(row['SENTENCE']))
-
-
-parameter = '--input={} --model_prefix={} --vocab_size={} --user_defined_symbols={}'
-
-input_file = './csv/corpus.txt'
-vocab_size = 6521 #3,2000이 가장 좋으나 할 수가 없음ㅠ
-prefix = 'test' #'bert_kor'
-user_defined_symbols = '[PAD],[UNK],[CLS],[SEP],[MASK]'
-model_type = 'bpe'
-
-cmd = parameter.format(input_file, prefix, vocab_size,user_defined_symbols)
-
-spm.SentencePieceTrainer.Train(cmd)
+# # 텍스트 파일로 만들기 -> setencepiece는 txt만 받음
+# with open(input_file, 'a+', encoding='utf-8') as f:
+#     for index, row in data.iterrows():
+#         f.write('{}\n'.format(row['SENTENCE']))
+#         # if row['CATEGORY'] == '배달음식점':
+#         #     f.write ('{}\n'.format(row['SENTENCE']))
 
 
-sp = spm.SentencePieceProcessor()
-sp.Load('{}.model'.format(prefix)) 
-token = sp.EncodeAsPieces(text1) #['▁감사합니다', '▁', '앞', '으로', '도', '▁잘', '부', '탁', '드려요', '▁', '풍', '성', '한', '토핑', '▁맛', '난', '피자', '로', '▁보', '답', '하겠습니다']
-token2 = sp.EncodeAsPieces(text2) #['▁맛있', '게', '▁잘', '▁먹', '었', '습니다', '~']
-token3 = sp.EncodeAsPieces(text3) #['▁마', '시', '써', '효', '!', '!', '!', '떡', '볶', '이', '도', '좋', '아요']
-token4 = sp.EncodeAsPieces(text4) #['▁불고기', '는', '▁', '처', '음', '▁시켜', '봤', '는데', '▁상', '상', '▁그', '이상', '.', '.', '.', '.']
-token5 = sp.EncodeAsPieces(text5) #['▁', '냠냠', '~', '너', '무', '▁맛있', '어', '용', '^^', '▁', '또', '▁시켜', '먹', '어요', '넘', '나', '맛', '있', '네', '여', '피', '짜', '로', '덤', '왜', '인', '기가', '잇', '는', '지', '알', '겟둠', '원', '픽', '예', '약', '임', '툐쿄']
-token6 = sp.EncodeAsPieces(text6) #['▁', '영', '등', '포', '피자', '중', '▁이', '찌', '방']
+# parameter = '--input={} --model_prefix={} --vocab_size={} --user_defined_symbols={}'
+
+# input_file = './csv/corpus.txt'
+# vocab_size = 12510 #3,2000이 가장 좋으나 할 수가 없음ㅠ
+# prefix = 'test' #'bert_kor'
+# user_defined_symbols = '[PAD],[UNK],[CLS],[SEP],[MASK]'
+# model_type = 'bpe'
+
+# cmd = parameter.format(input_file, prefix, vocab_size, user_defined_symbols)
+
+# spm.SentencePieceTrainer.Train(cmd)
 
 
-['▁감사합니다', '▁앞', '으로', '도', '▁잘', '부탁드려요', '▁', '풍', '성', '한', '토핑', '▁맛', '난', '피자', '로', '▁보', '답', '하겠습니다']
+# sp = spm.SentencePieceProcessor()
+# sp.Load('{}.model'.format(prefix)) 
+# token = sp.EncodeAsPieces(text1) #['▁감사합니다', '▁', '앞', '으로', '도', '▁잘', '부', '탁', '드려요', '▁', '풍', '성', '한', '토핑', '▁맛', '난', '피자', '로', '▁보', '답', '하겠습니다']
+# token2 = sp.EncodeAsPieces(text2) #['▁맛있', '게', '▁잘', '▁먹', '었', '습니다', '~']
+# token3 = sp.EncodeAsPieces(text3) #['▁마', '시', '써', '효', '!', '!', '!', '떡', '볶', '이', '도', '좋', '아요']
+# token4 = sp.EncodeAsPieces(text4) #['▁불고기', '는', '▁', '처', '음', '▁시켜', '봤', '는데', '▁상', '상', '▁그', '이상', '.', '.', '.', '.']
+# token5 = sp.EncodeAsPieces(text5) #['▁', '냠냠', '~', '너', '무', '▁맛있', '어', '용', '^^', '▁', '또', '▁시켜', '먹', '어요', '넘', '나', '맛', '있', '네', '여', '피', '짜', '로', '덤', '왜', '인', '기가', '잇', '는', '지', '알', '겟둠', '원', '픽', '예', '약', '임', '툐쿄']
+# token6 = sp.EncodeAsPieces(text6) #['▁', '영', '등', '포', '피자', '중', '▁이', '찌', '방']
+# token7 = sp.EncodeAsPieces(text7) 
+
+# ['▁감사합니다', '▁앞', '으로', '도', '▁잘', '부탁드려요', '▁', '풍', '성', '한', '토핑', '▁맛', '난', '피자', '로', '▁보', '답', '하겠습니다']
+# ['▁맛있게', '▁잘', '▁먹었', '습니다', '~']
+# ['▁마시', '써', '효', '!', '!', '!', '떡볶이', '도', '좋', '아요']
+# ['▁불고기', '는', '▁처음', '▁시켜', '봤', '는데', '▁상', '상', '▁그', '이상', '.', '.', '.', '.']
+# ['▁', '냠냠', '~', '너', '무', '▁맛있어', '용', '^^', '▁', '또', '▁시켜', '먹어요', '넘', '나', '맛', '있', '네', '여', '피', '짜', '로', '덤', '왜', '인', '기가', '잇', '는', '지', '알', '겟', '둠', '원', '픽
+# ', '예약', '임', '툐쿄']
+# ['▁영', '등', '포', '피자', '중', '▁이', '찌', '방']
+
+'''
+['▁감사합니다', '▁앞으로', '도', '▁잘', '부탁드려요', '▁풍성', '한', '토핑', '▁맛', '난', '피자', '로', '▁보', '답', '하겠습니다']
 ['▁맛있게', '▁잘', '▁먹었', '습니다', '~']
+['▁마시', '써', '효', '!', '!', '!', '떡볶이', '도', '좋아요']
+['▁불고기', '는', '▁처음', '▁시켜', '봤는데', '▁상', '상', '▁그', '이상', '.', '.', '.', '.']
+['▁', '냠냠', '~', '너', '무', '▁맛있어', '용', '^^', '▁또', '▁시켜먹', '어요', '넘', '나', '맛', '있', '네', '여', '피', '짜', '로', '덤', '왜', '인', '기가', '잇', '는', '지', '알', '겟', '둠', '원', '픽', '예약', '임', '툐쿄']
+['▁영', '등', '포', '피자', '중', '▁이', '찌', '방']
+['▁', 'ᄏᄏᄏᄏ', '▁파인애플', '▁당연', '▁추가', '한', '줄', '알', '고', '▁실수', '했', '네요', '죄', '송', '염', '~', '~', '��🤣🤣' 오오늘늘' '도도','▁맛맛' '나나' '게게','▁잘잘','▁먹먹' 겠습니니다다', '^^🥰,'샐러러드 각', '보다', '▁푸', '짐', '하게', '▁왔', '네요', '🥰']
+'가', '▁생각', '보다', '▁푸', '짐', '하게', '▁왔', '네요', '🥰']
+
+
+
+
+['▁감사합니다', '▁앞으로', '도', '▁잘', '부탁드려요', '▁풍성', '한', '토핑', '▁맛', '난', '피자', '로', '▁보', '답', '하겠습니다']
+['▁맛있게', '▁잘', '▁먹', '었', '습니다', '~']
 ['▁마시', '써', '효', '!', '!', '!', '떡볶이', '도', '좋', '아요']
-['▁불고기', '는', '▁처음', '▁시켜', '봤', '는데', '▁상', '상', '▁그', '이상', '.', '.', '.', '.']
-['▁', '냠냠', '~', '너', '무', '▁맛있어', '용', '^^', '▁', '또', '▁시켜', '먹어요', '넘', '나', '맛', '있', '네', '여', '피', '짜', '로', '덤', '왜', '인', '기가', '잇', '는', '지', '알', '겟', '둠', '원', '픽
+['▁불고기', '는', '▁처음', '▁시켜', '봤는데', '▁상', '상', '▁그', '이상', '.', '.', '.', '.']
+['▁', '냠냠', '~', '너', '무', '▁맛있어', '용', '^^', '▁또', '▁', '시켜먹어', '요', '넘', '나', '맛', '있', '네', '여', '피', '짜', '로', '덤', '왜', '인', '기가', '잇', '는', '지', '알', '겟', '둠', '원', '픽
 ', '예약', '임', '툐쿄']
 ['▁영', '등', '포', '피자', '중', '▁이', '찌', '방']
+['▁', 'ᄏᄏᄏᄏ', '▁파인애플', '▁당', '연', '▁추가', '한', '줄', '알', '고', '▁실', '수', '했', '네요', '죄', '송', '염', '~', '~', '��🤣🤣' '오오' '늘늘' '도도','▁맛맛' '나나' '게게','▁잘잘','▁먹먹' 겠습니니다다', '^', '가', '▁생각', '보다', '▁', '푸', '짐', '하게', '▁왔', '네요', '🥰']
+, '샐러드', '가', '▁생각', '보다', '▁', '푸', '짐', '하게', '▁왔', '네요', '🥰']
 
-print(token)
-print(token2)
-print(token3)
-print(token4)
-print(token5)
-print(token6)
+
+'''
+
+# print(token)
+# print(token2)
+# print(token3)
+# print(token4)
+# print(token5)
+# print(token6)
+# print(token7)
 
 '''
 input_file : 내 한국어 데이터 경로를 지정한다.
