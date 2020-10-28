@@ -2,10 +2,6 @@ from soyspacing.countbase import CountSpace
 from soyspacing.countbase import RuleDict
 
 
-corpus_fname = 'corpus.txt'
-model = CountSpace()
-model.train(corpus_fname)
-
 # 모델을 저장
 model_fname = 'ver1spacing.h5'
 model.save_model(model_fname, json_format=False)

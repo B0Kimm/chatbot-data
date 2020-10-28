@@ -58,6 +58,33 @@ male_category = dict(male['연령'].value_counts())
 print(female_category)
 print(male_category)
 
+print('=========강남 서초 비율=============')
+
+female = []
+male= []
+for index, row in df.iterrows():
+    if row['발신지(시군구)'] == '강남구' :
+        female.append(row)
+    elif row['발신지(시군구)'] == '서초구':
+            male.append(row)
+
+female =pd.DataFrame(female,columns=column)
+male =pd.DataFrame(male,columns=column)
+
+female_category = dict(female['성별'].value_counts())
+male_category = dict(male['성별'].value_counts())
+
+female_category1 = dict(female['연령'].value_counts())
+male_category1 = dict(male['연령'].value_counts())
+
+print(len(female))
+print(len(male))
+
+print(female_category)
+print(male_category)
+print(female_category1)
+print(male_category1)
+
 print('=========finished=============')
 
 
