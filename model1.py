@@ -9,8 +9,8 @@ import json
 import glob
 import re
 
-# input_file = r'C:\Users\USER\prep_data\json\review(seoul)'
-input_file = r'C:\Users\USER\prep_data\raw'
+input_file = r'C:\Users\USER\prep_data\json\review(seoul)'
+# input_file = r'C:\Users\USER\prep_data\raw'
 
 import pandas as pd
 from pandas import DataFrame
@@ -21,6 +21,7 @@ food_column = ['id', 'name', 'price', 'id', 'review_count']
 chatbot_column = [ 'shopid', 'menu_summary', 'nickname', 'rating', 'customer_comment',  'owner_comment' ]
 owner_column = ['orderid', 'owner_comment']
 movie_column = ['review']
+review_sent_column = ['review', 'point']
 
 class YogiyoModel :
     def __init__(self, filename):
@@ -106,17 +107,18 @@ class YogiyoModel :
                     reviews = item['reviews']
                     for idx in reviews:
                         comment = idx['comment']
-                        # comment = comment.replace('\r', '')
-                        # comment = comment.replace('\n', '')
-                        reply = idx['owner_reply']
-                        if reply != None :
-                            owner_comment = reply['comment']
+                        comment = comment.replace('\r', '')
+                        comment = comment.replace('\n', '')
+                        imsi = [comment, idx['rating']]
+                        # reply = idx['owner_reply']
+                        # if reply != None :
+                        #     owner_comment = reply['comment']
                             # owner_comment = owner_comment.replace('\r', '')
                             # owner_comment = owner_comment.replace('\n', '')
-                            imsi = [ item['id'], idx['menu_summary'], idx['rating'], idx['nickname'],  comment,  owner_comment ]
-                            result.append(imsi)                          
+                            # imsi = [comment, idx['rating']]
+                        result.append(imsi)                          
            
-        result = pd.DataFrame(result, columns=chatbot_column)
+        result = pd.DataFrame(result, columns=review_sent_column)
         outputname = f'{self.filename}.csv'
         result.to_csv(outputname, mode='w', encoding='utf-8', index=False)
 
@@ -188,7 +190,7 @@ class YogiyoModel :
             data.append(df)
             dataCombine = pd.concat(data, axis=0, ignore_index=True)
 
-        output_file = r'C:\Users\USER\prep_data\csv\movie.csv'
+        output_file = r'C:\Users\USER\prep_data\csv\sent_review.csv'
         dataCombine.to_csv(output_file, index=False)
 
         print(f'---------------csv created ---------------')
@@ -206,7 +208,7 @@ class YogiyoModel :
 if __name__ == '__main__':
     # filename = '.\csv\review.csv'
     # YogiyoModel(filename).owner_csv()
-    allFile_list = glob.glob(os.path.join(input_file, '*' +'.csv'))
+    allFile_list = glob.glob(os.path.join(input_file, 'yogiyo_review(*' +'.csv'))
     
     for file in allFile_list :
             YogiyoModel(f'{file}').merge()

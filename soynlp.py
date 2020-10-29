@@ -2,7 +2,7 @@ from soyspacing.countbase import CountSpace
 from soyspacing.countbase import RuleDict
 
 
-# 모델을 저장
+모델을 저장 =====soynlp=======
 model_fname = 'ver1spacing.h5'
 model.save_model(model_fname, json_format=False)
 
@@ -10,6 +10,7 @@ model = CountSpace()
 model.load_model(model_fname, json_format=False)
 
 rule_dict = RuleDict('rules.txt')
+
 
 text1 = '감사합니다 앞으로도 잘부탁드려요 풍성한토핑 맛난피자로 보답하겠습니다'
 text2 = '맛있게 잘 먹었습니다~'
@@ -27,6 +28,7 @@ sent_corrected5, tags = model.correct(text5, rules=rule_dict)
 sent_corrected6, tags = model.correct(text6, rules=rule_dict)
 sent_corrected7, tags = model.correct(text7, rules=rule_dict)
 
+print('======soynlp====')
 print(sent_corrected)
 print(sent_corrected2)
 print(sent_corrected3)

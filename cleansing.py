@@ -14,6 +14,9 @@ from pandas import DataFrame
 
 
 df = pd.read_csv('test4.csv', sep = ',', encoding= 'utf-8')
+df2 = pd.read_csv('./data/food.csv', sep = ',', encoding= 'utf-8')
+
+
 
 
 only_BMP_pattern = re.compile("["
@@ -28,20 +31,21 @@ only_BMP_pattern = re.compile("["
 # split_category = mycategory['category'].str.strip('][') # 파이썬 문자열 spilt
 
 # print(type(df['customer_comment']))
-review_column = ['shopid','menu_summary','nickname','rating','customer_comment','owner_comment']
+# review_column = ['shopid','menu_summary','nickname','rating','customer_comment','owner_comment']
+sent_column = ['food']
 
 only_BMP_pattern = re.compile("["
         u"\U00010000-\U0010FFFF" 
                            "]+", flags=re.UNICODE)
 
 result=[]
-for index, row in df.iterrows():
-    customer = only_BMP_pattern.sub(r' ', str(row['customer_comment']))
-    answer = only_BMP_pattern.sub(r' ', str(row['owner_comment']))
-    imsi = [row['shopid'],row['menu_summary'],row['nickname'],row['rating'], customer, answer]
+for index, row in df2.iterrows():
+    food = only_BMP_pattern.sub(r' ', str(row['food']))
+    # answer = only_BMP_pattern.sub(r' ', str(row['owner_comment']))
+    imsi = [food]
     result.append(imsi)
 
-result = pd.DataFrame(result, columns=review_column)
+result = pd.DataFrame(result, columns=sent_column)
 # result.to_csv('test.csv', mode='w', encoding='utf-8', index=False)
 
 
@@ -62,23 +66,23 @@ emoji_pattern = re.compile("["
                            "]+", flags=re.UNICODE)
 result1=[]
 for index, row in result.iterrows():
-    customer = emoji_pattern.sub(r' ', row['customer_comment'])
-    customer = re.sub('[❤️★♥️✨⭐♡♥☆⚽️⚾️❄❣️❤]', ' ', customer) 
+    # customer = emoji_pattern.sub(r' ', row['customer_comment'])
+    # customer = re.sub('[❤️★♥️✨⭐♡♥☆⚽️⚾️❄❣️❤]', ' ', customer) 
     pattern = '([ㄱ-ㅎㅏ-ㅣ]+)' #한글 자음 모음 제거 ㅋㅋㅋㅋ
-    customer = re.sub(pattern=pattern, repl='', string=customer)
-    customer = re.sub('[-=+,#/\:^$@*\"※~&%ㆍ!』\\‘;|\(\)\[\]\<\>`\'…》]', ' ', customer) #특수기호
-    customer = re.sub('  ', ' ', customer) #띄어쓰기가 2번이상 들어가면 -> 1번
-    answer = emoji_pattern.sub(r' ', row['owner_comment'])
-    answer = re.sub('[❤️★♥️✨⭐♡♥☆⚽️⚾️❄❣️❤]', ' ', answer)
-    answer = re.sub(pattern=pattern, repl='', string=answer)
-    answer = re.sub('[-=+,#/\:^$@*\"※~&%ㆍ!』\\‘|\(\)\[\]\<\>`\'…》]', ' ', answer)
-    answer = re.sub('  ', ' ', answer)
-    imsi = [row['shopid'],row['menu_summary'],row['nickname'],row['rating'], customer, answer]
+    # customer = re.sub(pattern=pattern, repl='', string=customer)
+    # customer = re.sub('[-=+,#/\:^$@*\"※~&%ㆍ!』\\‘;|\(\)\[\]\<\>`\'…》]', ' ', customer) #특수기호
+    # customer = re.sub('  ', ' ', customer) #띄어쓰기가 2번이상 들어가면 -> 1번
+    food = emoji_pattern.sub(r' ', row['food'])
+    food = re.sub('[❤️★♥️✨⭐♡♥☆⚽️⚾️❄❣️❤]', ' ', food)
+    food = re.sub(pattern=pattern, repl='', string=food)
+    food = re.sub('[-=+,#/\:^$@*\"※~&%ㆍ!』\\‘|\(\)\[\]\<\>`\'…》]', ' ', food)
+    food = re.sub('  ', ' ', food)
+    imsi = [row['food']]
 
     result1.append(imsi)
 
-result1 = pd.DataFrame(result1, columns=review_column)
-result1.to_csv('test4.csv', mode='w', encoding='utf-8', index=False)
+result1 = pd.DataFrame(result1, columns=sent_column)
+result1.to_csv('food4.csv', mode='w', encoding='utf-8', index=False)
 
 print('=======test2========')
 
